@@ -133,7 +133,6 @@ async function checkVersion() {
  */
 async function consturctServer(moduleDefs) {
   const app = express()
-  const { CORS_ALLOW_ORIGIN } = process.env
   app.set('trust proxy', true)
 
   /**
@@ -141,11 +140,11 @@ async function consturctServer(moduleDefs) {
    */
   app.use((req, res, next) => {
     if (req.path !== '/' && !req.path.includes('.')) {
+      /* controlled here */
       if (req.headers.origin && req.headers.origin.includes('szhshp')) {
         res.set({
           'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Origin':
-            CORS_ALLOW_ORIGIN || req.headers.origin || '*',
+          'Access-Control-Allow-Origin': req.headers.origin || '*',
           'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
           'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
           'Content-Type': 'application/json; charset=utf-8',
